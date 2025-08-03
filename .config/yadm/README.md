@@ -24,11 +24,18 @@ This ensures a consistent look, whether you prefer a light or dark working envir
 
 ```sh
 # Clone your yadm-managed dotfiles
-git clone <this-repo-url> ~/.config/yadm
-cd ~/.config/yadm
+mkdir -p ~/.local/bin
+curl -fLo ~/.local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+chmod a+x ~/.local/bin/yadm
+~/.local/bin/yadm clone https://github.com/alexandermiss/dotfiles.git
+~/.local/bin/yadm restore --staged $HOME
+~/.local/bin/yadm checkout -- $HOME
 
 # Run bootstrap to initialize Neovim config
-./bootstrap
+~/.local/bin/yadm bootstrap
+
+# Delete yadm
+rm -rf ~/.local/bin/yadm
 ```
 
 ## Structure
