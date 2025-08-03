@@ -1,0 +1,53 @@
+window {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-size: 14px;
+  transition: all 0.3s ease-in-out; /* Transiciones visuales suaves */
+  background-color: #0c0a09;  /* Fondo con tema oxocarbon */
+  color: #FFFFFF;             /* Texto blanco */
+  border: 2px solid #FF0000;  /* Borde rojo tipo Superman */
+  border-radius: 12px;        /* Bordes redondeados */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4); /* Sombra para profundidad */
+}
+
+#entry {
+  padding: 8px 12px; /* Optimizado para mejor estructura visual */
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Transiciones añadidas */
+}
+
+#entry:selected {
+  background-color: #1E3A8A;  /* Azul tipo Superman para ítem seleccionado */
+  color: #FACC15;             /* Texto amarillo */
+}
+
+#input {
+  margin: 12px; /* Márgenes ajustados */
+  padding: 8px 10px; /* Paddings optimizados */
+  background-color: #0c0a09;  /* Fondo con tema oxocarbon */
+  border: none;
+  color: #FFFFFF;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Transiciones añadidas */
+}
+
+#inner-box {
+  margin: 8px; /* Espaciado mejorado */
+}
+
+#outer-box {
+  margin: 12px; /* Márgenes ajustados */
+  padding: 8px; /* Paddings optimizados */
+  border-radius: 8px;
+  background-color: #0c0a09;  /* Fondo con tema oxocarbon */
+}
+
+#scroll {
+  margin: 8px 0; /* Espaciado mejorado */
+}
+
+#text {
+  margin-left: 8px; /* Espaciado optimizado */
+  transition: color 0.3s ease-in-out; /* Transiciones añadidas */
+}
+
+#text:selected {
+  color: #FACC15;
+}
