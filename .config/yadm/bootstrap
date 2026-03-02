@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Function to download nvim configuration from the alexandermiss repository
+nvim_setup() {
+  local nvim_dir="$HOME/.config/nvim"
+
+  # Check if git is installed
+  if ! command -v git >/dev/null 2>&1; then
+    echo "[ERROR] git is not installed. Please install git to continue."
+    return 1
+  fi
+
+  # Check if nvim configuration already exists
+  if [ -d "$nvim_dir" ]; then
+    echo "[INFO] The directory $nvim_dir already exists. Nothing will be downloaded."
+    return 0
+  fi
+
+  # Create .config directory if it doesn't exist
+  mkdir -p "$HOME/.config"
+
+  # Clone the nvim config repository
+  git clone https://github.com/alexandermiss/nvim "$nvim_dir"
+  if [ $? -eq 0 ]; then
+    echo "[OK] nvim configuration downloaded to $nvim_dir"
+  else
+    echo "[ERROR] Could not clone the repository."
+    return 2
+  fi
+}
+
+# To run the function automatically, you can uncomment the following line:
+
+nvim_setup

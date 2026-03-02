@@ -15,15 +15,17 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term foot
+# set $term ghostty
 # Your preferred application launcher
 set $menu wmenu-run
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-# output * bg /usr/sha/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-# output * bg /home/me/Pictures/walls/F4mcfW8-hd-superman-wallpaper.jpg fill
-# output * bg /home/me/Pictures/walls/superman-night.jpeg fill
+# output * bg /home/me/Pictures/walls/wallpapersden.com_superman-saving-supergirl_1920x1080.jpg fill
+# output * bg /home/me/Pictures/walls/psalm.png fill
+# output eDP-1 bg /home/me/Pictures/walls/psalm88_3_6.png fill
+output * bg /home/me/Pictures/walls/psalm88_3_6.png center
 #
 # Example configuration:
 #
@@ -164,7 +166,7 @@ exec blueman-applet
     # We just use 1-10 as the default.
 
 input * {
-    xkb_layout "us,es,ru"
+    xkb_layout "us,es"
 }
 bindsym $mod+Control+space exec "swaymsg input type:keyboard xkb_switch_layout next"
 
@@ -272,7 +274,13 @@ bar {
 # Espaciado entre borde de pantalla y ventanas
 # gaps outer 5
 
+for_window [app_id="audacious"] floating enable
 for_window [class="Audacious"] floating enable
+for_window [instance="Audacious"] floating enable
+for_window [title="Audacious"] floating enable
+for_window [title="Playlist"] floating enable
+for_window [title="Equalizer"] floating enable
+for_window [title="Settings"] floating enable
 
 default_border none
 

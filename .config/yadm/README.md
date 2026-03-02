@@ -1,29 +1,58 @@
-# Dotfiles Configuration
+# 🛠️ Dotfiles & Linux Setup
 
-This repository contains my personal dotfiles and system setup for a seamless Linux experience. It is managed with [yadm](https://yadm.io/) for easy deployment and synchronization across devices.
+> **Personalized, minimal, and visually consistent Linux environment — with full Dark & Light mode support.**
 
-## Features
+---
 
-- **Neovim Configuration**: Quickly set up a modern Neovim environment using an external, maintained repository.
-- **Sway Window Manager**: Customized configuration for both dark and light modes, offering a flexible and visually appealing tiling window management experience.
-- **Wofi Launcher**: Personalized wofi menus with themes for dark and light modes, ensuring optimal readability and aesthetics.
-- **Foot Terminal**: Terminal emulator configuration tailored for both dark and light schemes, enhancing your command-line experience in any lighting condition.
-- **Bootstrap Script**: Automated setup script to initialize Neovim and essential configurations with a single command.
+## ✨ Overview
 
-## Dark & Light Modes
+This repository contains my curated dotfiles and user-level configurations.
+All settings are managed by [yadm](https://yadm.io/), allowing simple deployment and synchronization across devices.
 
-All major desktop components support both dark and light themes. Easily switch between modes for:
+<div align="center">
 
-- **Wofi** (application launcher)
-- **Foot** (terminal emulator)
-- **Sway** (window manager)
+| ⚡ Fast setup | 🎨 Beautiful themes | 🌓 Dark & Light modes |
+|:-----------:|:------------------:|:---------------------:|
 
-This ensures a consistent look, whether you prefer a light or dark working environment.
+</div>
 
-## Quick Start
+---
+
+## 🎯 Key Features
+
+- **🔗 Centralized Neovim Config**  
+  Deploy a modern Neovim setup instantly (config is external but easily bootstrapped).
+
+- **🎛️ Sway Window Manager**  
+  Custom tiling window manager with seamless dark/light theming.
+
+- **🚀 Wofi Launcher**  
+  Application launcher with personalized menus and both dark & light themes.
+
+- **🖥️ Foot Terminal**  
+  Terminal emulator setup for both dark and light environments.
+
+- **⚙️ Bootstrap Script**  
+  Automated script to initialize Neovim and essential configs in a single step.
+
+---
+
+## 🌓 Dark & Light Modes
+
+All major desktop components feature both dark and light themes so you can easily switch based on mood or lighting:
+
+- **🌗 Wofi** (application launcher)
+- **🖥️ Foot** (terminal emulator)
+- **🪟 Sway** (window manager)
+
+> _Enjoy a consistent, beautiful interface in any environment._
+
+---
+
+## 🚀 Quick Start
 
 ```sh
-# Clone your yadm-managed dotfiles
+# Clone with yadm
 mkdir -p ~/.local/bin
 curl -fLo ~/.local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
 chmod a+x ~/.local/bin/yadm
@@ -31,28 +60,34 @@ chmod a+x ~/.local/bin/yadm
 ~/.local/bin/yadm restore --staged $HOME
 ~/.local/bin/yadm checkout -- $HOME
 
-# Run bootstrap to initialize Neovim config
+# Initialize Neovim and configs
 ~/.local/bin/yadm bootstrap
 
-# Delete yadm
+# Optionally remove yadm after setup
 rm -rf ~/.local/bin/yadm
 ```
 
-## Structure
+---
 
-```
+## 📂 Structure
+
+```text
 .config/
-├── sway/      # Sway window manager configs (dark & light)
-├── wofi/      # Wofi launcher configs & themes
+├── sway/      # Sway configs (dark & light)
+├── wofi/      # Wofi configs & themes
 ├── foot/      # Foot terminal configs (dark & light)
-├── nvim/      # Neovim config (external repo, see bootstrap)
-├── yadm/      # yadm config, including bootstrap script
+├── nvim/      # Neovim config (external repo)
+├── yadm/      # yadm config & bootstrap
 └── ...
 ```
 
 ---
 
-> **Maintained by [alexandermiss](https://github.com/alexandermiss)**
+## 🙋‍♂️ Maintainer
 
-Enjoy a beautiful and productive desktop, tailored for dark and light themes!
+**[alexandermiss](https://github.com/alexandermiss)**
+
+---
+
+> _Enjoy a beautiful, productive desktop — tailored for both dark and light modes!_
 
