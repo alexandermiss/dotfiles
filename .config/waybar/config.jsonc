@@ -1,0 +1,217 @@
+{
+  "layer": "bottom",
+  "position": "top",
+  "height": 25,
+  "spacing": 2,
+  "exclusive": true,
+  "gtk-layer-shell": true,
+  "passthrough": false,
+  "fixed-center": true,
+  "modules-left": [
+    "sway/mode",
+    "sway/window",
+    "custom/deezer",
+  ],
+  "modules-center": [
+    "sway/workspaces",
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "cpu",
+    "memory",
+    "pulseaudio",
+    "clock",
+    "clock#simpleclock",
+    "tray",
+    "sway/language",
+    "hyprland/language",
+    "custom/notification",
+    "custom/battery",
+    "custom/power",
+  ],
+  "mpd": {
+      "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
+      "format-disconnected": "Disconnected ",
+      "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
+      "unknown-tag": "N/A",
+      "interval": 5,
+      "consume-icons": {
+          "on": " "
+      },
+      "random-icons": {
+          "off": "<span color=\"#f53c3c\"></span> ",
+          "on": " "
+      },
+      "repeat-icons": {
+          "on": " "
+      },
+      "single-icons": {
+          "on": "1 "
+      },
+      "state-icons": {
+          "paused": "",
+          "playing": ""
+      },
+      "tooltip-format": "MPD (connected)",
+      "tooltip-format-disconnected": "MPD (disconnected)"
+  },
+  "custom/deezer": {
+    "format": "🎵 <span color='#f1c21b'>{}</span>",
+    "exec": "~/.config/waybar/scripts/deezer_status.sh",
+    "on-click": "playerctl -p deezer play-pause",
+    "on-click-middle": "playerctl -p deezer next",
+    "on-click-right": "playerctl -p deezer previous",
+    "interval": 2
+  },
+  "tray": {
+    "show-passive-items": true,
+    "spacing": 10,
+  },
+  "clock#simpleclock": {
+    "tooltip": false,
+    "format": " {:%H:%M}",
+  },
+  "clock": {
+    "format": " {:L%a %d %b}",
+    "calendar": {
+      "format": {
+        "days": "<span weight='normal'>{}</span>",
+                    "months": "<span color='#78a9ff'><b>{}</b></span>",
+                    "today": "<span color='#da1e28' weight='700'><u>{}</u></span>",
+                    "weekdays": "<span color='#f1c21b'><b>{}</b></span>",
+                    "weeks": "<span color='#42be65'><b>W{}</b></span>",
+      },
+      "mode": "month",
+      "mode-mon-col": 1,
+      "on-scroll": 1,
+    },
+    "tooltip-format": "<span color='#42be65' font='Fira Code 16'><tt><small>{calendar}</small></tt></span>",
+  },
+  "cpu": {
+    "format": " {usage}%",
+    "tooltip": true,
+    "interval": 1,
+  },
+  "memory": {
+    "format": "  <span color='#38BDF8'>{used:0.1f}Gi</span>",
+  },
+  "pulseaudio": {
+    "format": "{icon} <span color='#93C5FD'>{volume}%</span>",
+    "format-muted": "  <span color='#F87171'>muted</span>",
+    "format-icons": {
+      "headphone": "",
+      "default": [" <span color='#FDE047'>", " <span color='#93C5FD'>", " <span color='#10B981'>"],
+    },
+    "on-click": "pavucontrol",
+  },
+  "custom/sep": {
+    "format": "|",
+    "tooltip": false,
+  },
+  "sway/language": {
+    "format": "  {}",
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-en": "🇺🇸",
+    "format-es": "🇲🇽",
+    "format-ru": "🇷🇺"
+},
+  "custom/power": {
+    "tooltip": false,
+    "on-click": "wlogout -p layer-shell &",
+    "format": "⏻",
+  },
+  "custom/battery": {
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/battery_status.sh",
+    "interval": 30,
+    "return-type": "text",
+    "tooltip": false
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 20
+    },
+    "bat": "BAT1",
+    "format": "{capacity}% {icon}",
+    "format-icons": [
+      "󰪞 <span color='#da1e28'>",
+      "󰪟 <span color='#ff8389'>",
+      "󰪠 <span color='#f1c21b'>",
+      "󰪡 <span color='#f1c21b'>",
+      "󰪢 <span color='#42be65'>",
+      "󰪣 <span color='#42be65'>",
+      "󰪤 <span color='#42be65'>",
+      "󰪥 <span color='#42be65'>"
+    ],
+  },
+  "network": {
+      "format-wifi": "{essid} ({signalStrength}%) ",
+      "format-ethernet": "{ipaddr}/{cidr} ",
+      "tooltip-format": "{ifname} via {gwaddr} ",
+      "format-linked": "{ifname} (No IP) ",
+      "format-disconnected": "Disconnected ⚠",
+      "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+  "reload_style_on_change": true, 
+  "pulseaudio": {
+      "format": "{volume}% {icon} {format_source}",
+      "format-bluetooth": "{volume}% {icon} {format_source}",
+      "format-bluetooth-muted": " {icon} {format_source}",
+      "format-muted": " {format_source}",
+      "format-source": "{volume}% ",
+      "format-source-muted": "",
+      "format-icons": {
+          "headphone": "",
+          "hands-free": "",
+          "headset": "",
+          "phone": "",
+          "portable": "",
+          "car": "",
+          "default": ["", "", ""]
+      },
+      "on-click": "pavucontrol"
+  },
+  "pulseaudio#mic": {
+    "format": "{format_source}",
+    "format-source": "",
+    "format-source-muted": "",
+    "tooltip-format": "{volume}% {format_source} ",
+    "on-click": "pactl set-source-mute 0 toggle",
+    "on-scroll-down": "pactl set-source-volume 0 -1%",
+    "on-scroll-up": "pactl set-source-volume 0 +1%"
+  },
+  "group/audio": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 500,
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "pulseaudio",
+      "pulseaudio#mic",
+      "pulseaudio/slider"
+    ]
+  },
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 140,
+    "orientation": "horizontal"
+  },
+  "custom/notification": {
+    "escape": true,
+    "exec": "swaync-client -swb",
+    "exec-if": "which swaync-client",
+    "format": "{icon}",
+    "format-icons": {
+      "none": "󰅺",
+      "notification": "󰡟",
+    },
+    "on-click": "sleep 0.1 && swaync-client -t -sw",
+    "return-type": "json",
+    "tooltip": false,
+  },
+}

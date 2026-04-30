@@ -1,0 +1,158 @@
+/* Root Styles */
+* {
+  min-height: 0;
+  min-width: 0;
+  font-family: "Fira Code", "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+window#waybar {
+  transition-property: all;
+  transition-duration: 1s;
+  background-color: #EFF1F5; /* Catppuccin Latte */
+}
+
+/* General Button Styling */
+#workspaces button {
+  padding: 0.3rem 0.45rem;
+  margin: 0.2rem 0.15rem;
+  border-radius: 4px;
+  background-color: #CCD0DA; /* Catppuccin Latte Surface1 */
+  color: #DF8E1D; /* Catppuccin Latte Yellow */
+}
+
+#workspaces button:hover {
+  color: #EA76CB; /* Catppuccin Latte Pink */
+  background-color: #DC8A78; /* Catppuccin Latte Rosewater */
+}
+
+#workspaces button.focused {
+  background: #1E66F5; /* Catppuccin Latte Blue */
+  color: #EFF1F5; /* Catppuccin Latte Base */
+}
+
+#workspaces button.visible {
+  background: #209FB5; /* Catppuccin Latte Sapphire */
+  color: #EFF1F5; /* Catppuccin Latte Base */
+}
+
+#workspaces button.urgent {
+  background-color: #FE640B; /* Catppuccin Latte Peach */
+  color: #D20F39; /* Catppuccin Latte Red */
+}
+
+#clock,
+#pulseaudio,
+#custom-logo,
+#custom-power,
+#custom-spotify,
+#custom-notification,
+#cpu,
+#tray,
+#language,
+#memory,
+#window,
+#battery,
+#mpris {
+  padding: 0.2rem 0.4rem;
+  margin: 0.2rem 0.15rem;
+  border-radius: 4px;
+  background-color: #DCE0E8; /* Catppuccin Latte Surface0 */
+}
+
+/* MPRIS Playing Styling */
+#mpris.playing {
+  color: #40A02B; /* Catppuccin Latte Green */
+}
+
+#mpris.paused {
+  color: #8C8FA1; /* Catppuccin Latte Subtext0 */
+}
+
+#custom-sep {
+  padding: 0px;
+  color: #9CA0B0; /* Catppuccin Latte Overlay0 */
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+#cpu {
+  color: #40A02B; /* Catppuccin Latte Green */
+}
+
+#memory {
+  color: #1E66F5; /* Catppuccin Latte Blue */
+}
+
+#clock {
+  color: #8839EF; /* Catppuccin Latte Mauve */
+}
+
+#clock.simpleclock {
+  color: #1E66F5; /* Catppuccin Latte Blue */
+}
+
+#window {
+  color: #4C4F69; /* Catppuccin Latte Text */
+}
+
+#pulseaudio {
+  color: #7287FD; /* Catppuccin Latte Lavender */
+}
+
+#pulseaudio.muted {
+  color: #6C6F85; /* Catppuccin Latte Subtext1 */
+}
+
+#custom-logo {
+  color: #1E66F5; /* Catppuccin Latte Blue */
+}
+
+#custom-power {
+  color: #EA76CB; /* Catppuccin Latte Pink */
+}
+
+#battery {
+  color: #40A02B; /* Catppuccin Latte Green */
+  transition: background-color 0.3s;
+}
+
+#battery.low {
+  color: #D20F39; /* Catppuccin Latte Red */
+}
+
+#battery.medium {
+  color: #DF8E1D; /* Catppuccin Latte Yellow */
+}
+
+#battery.high {
+  background-color: #40A02B; /* Catppuccin Latte Green */
+}
+
+
+#language.ru {
+    color: #D20F39; /* Catppuccin Latte Red */
+    /* color: white; */
+    text-transform: uppercase;
+}
+
+#language.us {
+    color: #1E66F5; /* Catppuccin Latte Blue */
+    /* color: white; */
+    text-transform: uppercase;
+}
+
+#language.es {
+    color: #DF8E1D; /* Catppuccin Latte Yellow */
+    /* color: white; */
+    text-transform: uppercase;
+}
+
+tooltip {
+  background-color: #EFF1F5; /* Catppuccin Latte Base */
+  border: 2px solid #1E66F5; /* Catppuccin Latte Blue */
+  color: #4C4F69; /* Catppuccin Latte Text */
+}
