@@ -1,56 +1,53 @@
 window {
   font-family: "JetBrainsMono Nerd Font", monospace;
   font-size: 14px;
-  transition: all 0.3s ease-in-out; /* Smooth visual transitions */
-  background-color: #f5f5f4;  /* Light background for light mode */
-  color: #1a1a1a;             /* Dark text color */
-  border: 2px solid #2563EB;  /* Blue Superman border */
-  border-radius: 12px;        /* Rounded borders */
-  box-shadow: 0px 4px 6px rgba(60, 60, 60, 0.12); /* Softer shadow for light mode */
+  transition: all 0.3s ease-in-out;
+  background-color: #eff1f5;  /* base */
+  color: #4c4f69;             /* text */
+  border: 2px solid #8839ef;  /* mauve */
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #entry {
-  padding: 8px 12px; /* Visual structure optimized */
-  background-color: #f5f5f4;
-  color: #1a1a1a;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transitions */
+  padding: 8px 12px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 #entry:selected {
-  background-color: #2563EB;  /* Superman blue for selected item */
-  color: #FACC15;             /* Yellow text */
+  background-color: #ccd0da;  /* surface0 */
+  color: #dc8a78;             /* rosewater */
 }
 
 #input {
-  margin: 12px; /* Adjusted margins */
-  padding: 8px 10px; /* Optimized paddings */
-  background-color: #fdfdfb;  /* Light background for input */
+  margin: 12px;
+  padding: 8px 10px;
+  background-color: #e6e9ef;  /* mantle */
   border: none;
-  color: #1a1a1a;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth transitions */
+  color: #4c4f69;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 #inner-box {
-  margin: 8px; /* Espaciado mejorado */
+  margin: 8px;
 }
 
 #outer-box {
-  margin: 12px; /* Adjusted margins */
-  padding: 8px; /* Optimized paddings */
+  margin: 12px;
+  padding: 8px;
   border-radius: 8px;
-  background-color: #f5f5f4;  /* Light background for light mode */
+  background-color: #e6e9ef;  /* mantle */
 }
 
 #scroll {
-  margin: 8px 0; /* Espaciado mejorado */
+  margin: 8px 0;
 }
 
 #text {
-  margin-left: 8px; /* Optimized spacing */
-  color: #1a1a1a;
-  transition: color 0.3s ease-in-out; /* Smooth transitions */
+  margin-left: 8px;
+  transition: color 0.3s ease-in-out;
 }
 
 #text:selected {
-  color: #FACC15;
+  color: #ea76cb; /* pink */
 }
