@@ -1,0 +1,152 @@
+/* Root Styles */
+* {
+  min-height: 0;
+  min-width: 0;
+  font-family: "Fira Code", "JetBrains Mono", monospace;
+  font-size: 10px;
+}
+
+window#waybar {
+  transition-property: all;
+  transition-duration: 1s;
+  background-color: #1E1E2E; /* Catppuccin Mocha */
+}
+
+/* General Button Styling */
+#workspaces button {
+  padding: 2px 4px;
+  margin: 0.2rem 0.15rem;
+  border-radius: 4px;
+  background-color: #45475A; /* Catppuccin Gray */
+  color: #F9E2AF; /* Catppuccin Yellow */
+}
+
+#workspaces button:hover {
+  color: #F5C2E7; /* Catppuccin Pink */
+  background-color: #E5A8C8; /* Catppuccin Rosewater */
+}
+
+#workspaces button.focused {
+  background: #89B4FA; /* Catppuccin Stronger Blue */
+  color: #FFFFFF; /* Catppuccin White */
+}
+
+#workspaces button.visible {
+  background: #7287FD; /* Catppuccin More Intense Sapphire */
+  color: #FFFFFF; /* Catppuccin White */
+}
+
+#workspaces button.urgent {
+  background-color: #F5A97F; /* Catppuccin Orange */
+  color: #F28FAD; /* Catppuccin Red */
+}
+
+#clock,
+#pulseaudio,
+#custom-logo,
+#custom-power,
+#custom-spotify,
+#custom-notification,
+#cpu,
+#tray,
+#language,
+#memory,
+#window,
+#battery,
+#mpris {
+  padding: 0.2rem 0.4rem;
+  margin: 0.2rem 0.15rem;
+  border-radius: 4px;
+  background-color: #0c0a09;
+}
+
+/* MPRIS Playing Styling */
+#mpris.playing {
+  color: #a6e3a1;
+}
+
+#mpris.paused {
+  color: #9399b2;
+}
+
+#custom-sep {
+  padding: 0px;
+  color: #585b70;
+}
+
+window#waybar.empty #window {
+  background-color: transparent;
+}
+
+#cpu {
+  color: #C6F8D6; /* Catppuccin Green */
+}
+
+#memory {
+  color: #B7BDF8; /* Catppuccin Blue */
+}
+
+#clock {
+  color: #CBA6F7; /* Catppuccin Purple */
+}
+
+#clock.simpleclock {
+  color: #89b4fa;
+}
+
+#window {
+  color: #cdd6f4;
+}
+
+#pulseaudio {
+  color: #b4befe;
+}
+
+#pulseaudio.muted {
+  color: #a6adc8;
+}
+
+#custom-logo {
+  color: #89b4fa;
+}
+
+#custom-power {
+  color: #f38ba8;
+}
+
+#battery {
+  color: #A6E3A1; /* Catppuccin Green */
+}
+
+#battery.low {
+  color: #F87171; /* Tailwind Red 400 */
+}
+
+#battery.medium {
+  color: #FBBF24; /* Tailwind Yellow 500 */
+}
+
+#battery.high {
+  background-color: #10B981; /* Tailwind Green 500 */
+}
+
+
+#language.ru {
+    color: #F87171; /* Tailwind Red 400 */
+    /* color: white; */
+}
+
+#language.us {
+    color: #93C5FD; /* Tailwind Blue 300 */
+    /* color: white; */
+}
+
+#language.es {
+    color: #FDE047; /* Tailwind Yellow 400 */
+    /* color: white; */
+}
+
+tooltip {
+  background-color: #1F2937; /* Tailwind Gray 900 */
+  border: 2px solid #93C5FD; /* Tailwind Blue 300 */
+}
