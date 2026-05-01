@@ -203,41 +203,25 @@ zsh_setup() {
     echo "[INFO] zsh ya es el shell por defecto."
   fi
 
-  # Escribir ~/.zshrc con la configuración completa solo si no existe
-  if [ -f "$zshrc" ]; then
-    echo "[INFO] $zshrc ya existe. No se sobrescribirá."
-    echo "[INFO] Asegúrate de tener estas líneas en tu $zshrc:"
-    echo ""
-    echo '  # nvm'
-    echo '  export NVM_DIR="$HOME/.nvm"'
-    echo '  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-    echo ""
-    echo '  # rbenv'
-    echo '  export PATH="$HOME/.rbenv/bin:$PATH"'
-    echo '  eval "$(rbenv init -)"'
-    echo ""
-    echo '  # Cargo'
-    echo '  . "$HOME/.cargo/env"'
-    echo ""
-    echo '  # zoxide'
-    echo '  eval "$(zoxide init zsh)"'
-    return 0
+  # Instalar Oh My Zsh
+  local omz_dir="$HOME/.oh-my-zsh"
+  if [ -d "$omz_dir" ]; then
+    echo "[INFO] Oh My Zsh ya está instalado en $omz_dir"
+  else
+    echo "[INFO] Instalando Oh My Zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    echo "[OK] Oh My Zsh instalado correctamente"
   fi
 
-  echo "[INFO] Creando $zshrc con la configuración completa..."
+  # El instalador de Oh My Zsh ya creó ~/.zshrc.
+  # Agregamos nuestra configuración adicional al final.
+  echo "[INFO] Agregando configuración adicional a $zshrc..."
 
-  cat > "$zshrc" << 'ZSHEOF'
-# =============================================================================
-# .zshrc generado por bootstrap
-# =============================================================================
+  cat >> "$zshrc" << 'ZSHEOF'
 
-# --- Historial ---
-HISTSIZE=50000
-SAVEHIST=50000
-HISTFILE="$HOME/.zsh_history"
-setopt SHARE_HISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
+# =============================================================================
+# Configuración adicional (agregada por bootstrap)
+# =============================================================================
 
 # --- nvm ---
 export NVM_DIR="$HOME/.nvm"
@@ -261,16 +245,9 @@ alias l='ls -CF'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias grep='grep --color=auto'
-
-# --- Prompt personalizado ---
-autoload -Uz promptinit && promptinit
-autoload -Uz vcs_info
-precmd() { vcs_info }
-zstyle ':vcs_info:git:*' formats '(%b) '
-PROMPT='%n@%m %~ ${vcs_info_msg_0_}%# '
 ZSHEOF
 
-  echo "[OK] $zshrc creado correctamente"
+  echo "[OK] Configuración adicional agregada a $zshrc"
 }
 
 # =============================================================================
