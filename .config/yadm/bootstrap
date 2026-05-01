@@ -322,19 +322,19 @@ echo "  Paso 5: Configurando Zsh..."
 echo "=========================================="
 zsh_setup
 
-# 6. yay (AUR helper)
+# 6. yay (AUR helper) — con privilegios
 echo ""
 echo "=========================================="
 echo "  Paso 6: Instalando yay..."
 echo "=========================================="
-yay_setup
+su -c "$(declare -f yay_setup); yay_setup"
 
-# 7. paru (AUR helper)
+# 7. paru (AUR helper) — con privilegios
 echo ""
 echo "=========================================="
 echo "  Paso 7: Instalando paru..."
 echo "=========================================="
-paru_setup
+su -c "$(declare -f paru_setup); paru_setup"
 
 # 8. Aplicaciones con yay (como root)
 echo ""
