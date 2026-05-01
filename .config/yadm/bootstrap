@@ -185,7 +185,7 @@ zsh_setup() {
   local zsh_bin
   zsh_bin="$(command -v zsh)"
 
-  if [ -z "$zsh_bin" ];then
+  if [ -z "$zsh_bin" ]; then
     echo "[ERROR] zsh no está instalado. Saliendo..."
     return 1
   fi
@@ -217,7 +217,7 @@ zsh_setup() {
   # Agregamos nuestra configuración adicional al final.
   echo "[INFO] Agregando configuración adicional a $zshrc..."
 
-  cat >> "$zshrc" << 'ZSHEOF'
+  cat >>"$zshrc" <<'ZSHEOF'
 
 # =============================================================================
 # Configuración adicional (agregada por bootstrap)
@@ -245,6 +245,8 @@ alias l='ls -CF'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias grep='grep --color=auto'
+alias v='nvim'
+alias q='exit'
 ZSHEOF
 
   echo "[OK] Configuración adicional agregada a $zshrc"
@@ -292,12 +294,12 @@ echo "  Paso 1: Instalando paquetes base..."
 echo "=========================================="
 su -c "$(declare -f install_root); install_root"
 
-# 2. Configurar Zsh (como usuario)
+# 2. Rust / Cargo (como usuario) — debe ir antes de Zsh para que exista $HOME/.cargo/env
 echo ""
 echo "=========================================="
-echo "  Paso 2: Configurando Zsh..."
+echo "  Paso 2: Instalando Rust + Cargo..."
 echo "=========================================="
-zsh_setup
+cargo_setup
 
 # 3. nvm + Node.js (como usuario)
 echo ""
@@ -306,45 +308,45 @@ echo "  Paso 3: Instalando nvm + Node.js LTS..."
 echo "=========================================="
 nvm_setup
 
-# 3. rbenv + Ruby (como usuario)
+# 4. rbenv + Ruby (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 3: Instalando rbenv + Ruby LTS..."
+echo "  Paso 4: Instalando rbenv + Ruby LTS..."
 echo "=========================================="
 rbenv_setup
 
-# 4. Rust / Cargo (como usuario)
+# 5. Configurar Zsh (como usuario) — después de cargo/nvm/rbenv para que existan los archivos env
 echo ""
 echo "=========================================="
-echo "  Paso 4: Instalando Rust + Cargo..."
+echo "  Paso 5: Configurando Zsh..."
 echo "=========================================="
-cargo_setup
+zsh_setup
 
-# 5. yay (AUR helper)
+# 6. yay (AUR helper)
 echo ""
 echo "=========================================="
-echo "  Paso 5: Instalando yay..."
+echo "  Paso 6: Instalando yay..."
 echo "=========================================="
 yay_setup
 
-# 6. paru (AUR helper)
+# 7. paru (AUR helper)
 echo ""
 echo "=========================================="
-echo "  Paso 6: Instalando paru..."
+echo "  Paso 7: Instalando paru..."
 echo "=========================================="
 paru_setup
 
-# 7. Aplicaciones con yay (como root)
+# 8. Aplicaciones con yay (como root)
 echo ""
 echo "=========================================="
-echo "  Paso 7: Instalando aplicaciones con yay..."
+echo "  Paso 8: Instalando aplicaciones con yay..."
 echo "=========================================="
 yay_apps_setup
 
-# 8. Neovim config (como usuario)
+# 9. Neovim config (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 7: Configurando Neovim..."
+echo "  Paso 9: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
