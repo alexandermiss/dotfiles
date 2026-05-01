@@ -1,14 +1,281 @@
 #!/usr/bin/env bash
 
+# =============================================================================
+# Arch Linux Bootstrap Script
+# =============================================================================
+
 if [[ $EUID -eq 0 ]]; then
   echo "El script no debe ejecutarse como root. Saliendo..."
   exit 1
 fi
 
+# =============================================================================
+# Versiones
+# =============================================================================
+NVM_VERSION="v0.40.2"
+NODE_LTS_VERSION="22.14.0"
+RBENV_VERSION="v1.3.2"
+RUBY_LTS_VERSION="3.3.7"
+
+# =============================================================================
+# Instalación como root (paquetes del sistema)
+# =============================================================================
 install_root() {
-  pacman -S --needed neovim git zsh zoxide
+  # Paquetes base del sistema
+  pacman -S --needed \
+    neovim \
+    git \
+    zsh \
+    zoxide \
+    make \
+    bash \
+    gcc \
+    go \
+    curl \
+    base-devel \
+    firefox \
+    chromium \
+    fzf \
+    btop \
+    lazygit \
+    jless
 }
 
+# =============================================================================
+# nvm + Node.js LTS
+# =============================================================================
+nvm_setup() {
+  local nvm_dir="$HOME/.nvm"
+
+  if [ -d "$nvm_dir" ]; then
+    echo "[INFO] nvm ya está instalado en $nvm_dir"
+    return 0
+  fi
+
+  echo "[INFO] Instalando nvm $NVM_VERSION..."
+  curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_VERSION/install.sh" | bash
+
+  # Cargar nvm inmediatamente para instalar Node.js
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+  echo "[INFO] Instalando Node.js $NODE_LTS_VERSION (LTS)..."
+  nvm install "$NODE_LTS_VERSION"
+  nvm alias default "$NODE_LTS_VERSION"
+
+  echo "[OK] nvm $NVM_VERSION y Node.js $NODE_LTS_VERSION instalados"
+}
+
+# =============================================================================
+# rbenv + Ruby LTS
+# =============================================================================
+rbenv_setup() {
+  local rbenv_dir="$HOME/.rbenv"
+
+  if [ -d "$rbenv_dir" ]; then
+    echo "[INFO] rbenv ya está instalado en $rbenv_dir"
+    return 0
+  fi
+
+  echo "[INFO] Instalando rbenv $RBENV_VERSION..."
+  git clone https://github.com/rbenv/rbenv.git "$rbenv_dir"
+  cd "$rbenv_dir" && src/configure && make -C src
+
+  # ruby-build plugin para instalar versiones de Ruby
+  mkdir -p "$rbenv_dir/plugins"
+  git clone https://github.com/rbenv/ruby-build.git "$rbenv_dir/plugins/ruby-build"
+
+  # Cargar rbenv inmediatamente para instalar Ruby
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+
+  echo "[INFO] Instalando Ruby $RUBY_LTS_VERSION..."
+  rbenv install "$RUBY_LTS_VERSION"
+  rbenv global "$RUBY_LTS_VERSION"
+
+  echo "[OK] rbenv $RBENV_VERSION y Ruby $RUBY_LTS_VERSION instalados"
+}
+
+# =============================================================================
+# Cargo / Rust (via rustup)
+# =============================================================================
+cargo_setup() {
+  if command -v cargo >/dev/null 2>&1; then
+    echo "[INFO] Cargo/Rust ya está instalado"
+    return 0
+  fi
+
+  echo "[INFO] Instalando Rust y Cargo via rustup..."
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+
+  # Cargar cargo inmediatamente
+  . "$HOME/.cargo/env"
+
+  echo "[OK] Rust y Cargo instalados correctamente"
+}
+
+# =============================================================================
+# yay (AUR Helper)
+# =============================================================================
+yay_setup() {
+  if command -v yay >/dev/null 2>&1; then
+    echo "[INFO] yay ya está instalado"
+    return 0
+  fi
+
+  echo "[INFO] Instalando yay desde AUR..."
+
+  if [ ! -d "/tmp/yay-bin" ]; then
+    git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
+  fi
+
+  cd /tmp/yay-bin
+  makepkg -si --noconfirm
+  cd "$OLDPWD"
+
+  echo "[OK] yay instalado correctamente"
+}
+
+# =============================================================================
+# paru (AUR Helper)
+# =============================================================================
+paru_setup() {
+  if command -v paru >/dev/null 2>&1; then
+    echo "[INFO] paru ya está instalado"
+    return 0
+  fi
+
+  echo "[INFO] Instalando paru desde AUR..."
+
+  if [ ! -d "/tmp/paru-bin" ]; then
+    git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
+  fi
+
+  cd /tmp/paru-bin
+  makepkg -si --noconfirm
+  cd "$OLDPWD"
+
+  echo "[OK] paru instalado correctamente"
+}
+
+# =============================================================================
+# Aplicaciones con yay
+# =============================================================================
+yay_apps_setup() {
+  if ! command -v yay >/dev/null 2>&1; then
+    echo "[ERROR] yay no está instalado. No se pueden instalar aplicaciones."
+    return 1
+  fi
+
+  echo "[INFO] Instalando aplicaciones con yay (una sola solicitud de contraseña)..."
+
+  # Lista de aplicaciones AUR a instalar
+  su -c "yay -S --noconfirm \
+    crush \
+    brave-bin"
+
+  echo "[OK] Aplicaciones instaladas correctamente"
+}
+
+# =============================================================================
+# Configuración de Zsh
+# =============================================================================
+zsh_setup() {
+  local zshrc="$HOME/.zshrc"
+  local zsh_bin
+  zsh_bin="$(command -v zsh)"
+
+  if [ -z "$zsh_bin" ];then
+    echo "[ERROR] zsh no está instalado. Saliendo..."
+    return 1
+  fi
+
+  # Cambiar el shell por defecto a zsh si no es ya el actual
+  if [ "$SHELL" != "$zsh_bin" ]; then
+    echo "[INFO] Cambiando el shell por defecto a zsh..."
+    if command -v chsh >/dev/null 2>&1; then
+      chsh -s "$zsh_bin"
+      echo "[OK] Shell cambiado a zsh. Los cambios se aplicarán al reiniciar sesión."
+    else
+      echo "[WARN] chsh no está disponible. Cambia el shell manualmente con: chsh -s $zsh_bin"
+    fi
+  else
+    echo "[INFO] zsh ya es el shell por defecto."
+  fi
+
+  # Escribir ~/.zshrc con la configuración completa solo si no existe
+  if [ -f "$zshrc" ]; then
+    echo "[INFO] $zshrc ya existe. No se sobrescribirá."
+    echo "[INFO] Asegúrate de tener estas líneas en tu $zshrc:"
+    echo ""
+    echo '  # nvm'
+    echo '  export NVM_DIR="$HOME/.nvm"'
+    echo '  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    echo ""
+    echo '  # rbenv'
+    echo '  export PATH="$HOME/.rbenv/bin:$PATH"'
+    echo '  eval "$(rbenv init -)"'
+    echo ""
+    echo '  # Cargo'
+    echo '  . "$HOME/.cargo/env"'
+    echo ""
+    echo '  # zoxide'
+    echo '  eval "$(zoxide init zsh)"'
+    return 0
+  fi
+
+  echo "[INFO] Creando $zshrc con la configuración completa..."
+
+  cat > "$zshrc" << 'ZSHEOF'
+# =============================================================================
+# .zshrc generado por bootstrap
+# =============================================================================
+
+# --- Historial ---
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE="$HOME/.zsh_history"
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+
+# --- nvm ---
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# --- rbenv ---
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# --- Cargo ---
+. "$HOME/.cargo/env"
+
+# --- zoxide ---
+eval "$(zoxide init zsh)"
+
+# --- Aliases útiles ---
+alias ls='ls --color=auto'
+alias ll='ls -lah'
+alias la='ls -A'
+alias l='ls -CF'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias grep='grep --color=auto'
+
+# --- Prompt personalizado ---
+autoload -Uz promptinit && promptinit
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git:*' formats '(%b) '
+PROMPT='%n@%m %~ ${vcs_info_msg_0_}%# '
+ZSHEOF
+
+  echo "[OK] $zshrc creado correctamente"
+}
+
+# =============================================================================
+# Neovim config
+# =============================================================================
 nvim_setup() {
   local nvim_dir="$HOME/.config/nvim"
 
@@ -37,8 +304,93 @@ nvim_setup() {
   fi
 }
 
-# ejecutar root una sola vez
+# =============================================================================
+# Ejecución principal
+# =============================================================================
+
+# 1. Paquetes base del sistema (como root)
+echo ""
+echo "=========================================="
+echo "  Paso 1: Instalando paquetes base..."
+echo "=========================================="
 su -c "$(declare -f install_root); install_root"
 
-# ejecutar usuario
+# 2. Configurar Zsh (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 2: Configurando Zsh..."
+echo "=========================================="
+zsh_setup
+
+# 3. nvm + Node.js (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 3: Instalando nvm + Node.js LTS..."
+echo "=========================================="
+nvm_setup
+
+# 3. rbenv + Ruby (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 3: Instalando rbenv + Ruby LTS..."
+echo "=========================================="
+rbenv_setup
+
+# 4. Rust / Cargo (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 4: Instalando Rust + Cargo..."
+echo "=========================================="
+cargo_setup
+
+# 5. yay (AUR helper)
+echo ""
+echo "=========================================="
+echo "  Paso 5: Instalando yay..."
+echo "=========================================="
+yay_setup
+
+# 6. paru (AUR helper)
+echo ""
+echo "=========================================="
+echo "  Paso 6: Instalando paru..."
+echo "=========================================="
+paru_setup
+
+# 7. Aplicaciones con yay (como root)
+echo ""
+echo "=========================================="
+echo "  Paso 7: Instalando aplicaciones con yay..."
+echo "=========================================="
+yay_apps_setup
+
+# 8. Neovim config (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 7: Configurando Neovim..."
+echo "=========================================="
 nvim_setup
+
+echo ""
+echo "=========================================="
+echo "  ¡Instalación completada!"
+echo "=========================================="
+echo ""
+echo "Versiones instaladas:"
+echo "  nvm:     $NVM_VERSION"
+echo "  Node.js: $NODE_LTS_VERSION (LTS)"
+echo "  rbenv:   $RBENV_VERSION"
+echo "  Ruby:    $RUBY_LTS_VERSION"
+echo ""
+echo "Recomendación: agrega estas líneas a tu ~/.zshrc o ~/.bashrc:"
+echo ""
+echo '  # nvm'
+echo '  export NVM_DIR="$HOME/.nvm"'
+echo '  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+echo ""
+echo '  # rbenv'
+echo '  export PATH="$HOME/.rbenv/bin:$PATH"'
+echo '  eval "$(rbenv init -)"'
+echo ""
+echo '  # Cargo'
+echo '  . "$HOME/.cargo/env"'
