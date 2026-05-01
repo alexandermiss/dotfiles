@@ -33,6 +33,7 @@ install_root() {
     go \
     curl \
     base-devel \
+    flatpak \
     firefox \
     chromium \
     fzf \
@@ -115,66 +116,16 @@ cargo_setup() {
 }
 
 # =============================================================================
-# yay (AUR Helper)
+# Flathub
 # =============================================================================
-yay_setup() {
-  if command -v yay >/dev/null 2>&1; then
-    echo "[INFO] yay ya está instalado"
-    return 0
-  fi
+flathub_setup() {
+  echo "[INFO] Agregando repositorio Flathub (usuario)..."
+  flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
-  echo "[INFO] Instalando yay desde AUR..."
+  echo "[INFO] Instalando Waterfox desde Flathub (usuario)..."
+  flatpak install --user -y flathub net.waterfox.waterfox
 
-  if [ ! -d "/tmp/yay-bin" ]; then
-    git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-  fi
-
-  cd /tmp/yay-bin
-  makepkg -si --noconfirm
-  cd "$OLDPWD"
-
-  echo "[OK] yay instalado correctamente"
-}
-
-# =============================================================================
-# paru (AUR Helper)
-# =============================================================================
-paru_setup() {
-  if command -v paru >/dev/null 2>&1; then
-    echo "[INFO] paru ya está instalado"
-    return 0
-  fi
-
-  echo "[INFO] Instalando paru desde AUR..."
-
-  if [ ! -d "/tmp/paru-bin" ]; then
-    git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
-  fi
-
-  cd /tmp/paru-bin
-  makepkg -si --noconfirm
-  cd "$OLDPWD"
-
-  echo "[OK] paru instalado correctamente"
-}
-
-# =============================================================================
-# Aplicaciones con yay
-# =============================================================================
-yay_apps_setup() {
-  if ! command -v yay >/dev/null 2>&1; then
-    echo "[ERROR] yay no está instalado. No se pueden instalar aplicaciones."
-    return 1
-  fi
-
-  echo "[INFO] Instalando aplicaciones con yay (una sola solicitud de contraseña)..."
-
-  # Lista de aplicaciones AUR a instalar
-  su -c "yay -S --noconfirm \
-    crush \
-    brave-bin"
-
-  echo "[OK] Aplicaciones instaladas correctamente"
+  echo "[OK] Flathub configurado y Waterfox instalado (solo para el usuario)"
 }
 
 # =============================================================================
@@ -301,7 +252,14 @@ echo "  Paso 2: Instalando Rust + Cargo..."
 echo "=========================================="
 cargo_setup
 
-# 3. nvm + Node.js (como usuario)
+# 3. Flathub + Waterfox (como root)
+echo ""
+echo "=========================================="
+echo "  Paso 3: Configurando Flathub e instalando Waterfox..."
+echo "=========================================="
+flathub_setup
+
+# 4. nvm + Node.js (como usuario)
 echo ""
 echo "=========================================="
 echo "  Paso 3: Instalando nvm + Node.js LTS..."
@@ -322,31 +280,10 @@ echo "  Paso 5: Configurando Zsh..."
 echo "=========================================="
 zsh_setup
 
-# 6. yay (AUR helper) — con privilegios
+# 6. Neovim config (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 6: Instalando yay..."
-echo "=========================================="
-su -c "$(declare -f yay_setup); yay_setup"
-
-# 7. paru (AUR helper) — con privilegios
-echo ""
-echo "=========================================="
-echo "  Paso 7: Instalando paru..."
-echo "=========================================="
-su -c "$(declare -f paru_setup); paru_setup"
-
-# 8. Aplicaciones con yay (como root)
-echo ""
-echo "=========================================="
-echo "  Paso 8: Instalando aplicaciones con yay..."
-echo "=========================================="
-yay_apps_setup
-
-# 9. Neovim config (como usuario)
-echo ""
-echo "=========================================="
-echo "  Paso 9: Configurando Neovim..."
+echo "  Paso 6: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
