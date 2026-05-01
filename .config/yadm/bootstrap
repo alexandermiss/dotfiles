@@ -1,14 +1,44 @@
 #!/usr/bin/env bash
 
-if [[ $EUID -ne 0 ]]; then
-  echo "Ejecuta como root: su -c 'yadm bootstrap'"
+if [[ $EUID -eq 0 ]]; then
+  echo "El script no debe ejecutarse como root. Saliendo..."
   exit 1
 fi
 
-MY_USER=""
+install_root() {
+  pacman -S --needed neovim git zsh zoxide
+}
 
-# Parte root (instalar paquetes)
-pacman -S --needed neovim git zsh zoxide
+nvim_setup() {
+  local nvim_dir="$HOME/.config/nvim"
 
-# Ejecutar parte de usuario
-su - $MY_USER -c "~/.config/yadm/bootstrap_user"
+  # Check if git is installed
+  if ! command -v git >/dev/null 2>&1; then
+    echo "[ERROR] git is not installed. Please install git to continue."
+    return 1
+  fi
+
+  # Check if nvim configuration already exists
+  if [ -d "$nvim_dir" ]; then
+    echo "[INFO] The directory $nvim_dir already exists. Nothing will be downloaded."
+    return 0
+  fi
+
+  # Create .config directory if it doesn't exist
+  mkdir -p "$HOME/.config"
+
+  # Clone the nvim config repository
+  git clone https://github.com/alexandermiss/nvim "$nvim_dir"
+  if [ $? -eq 0 ]; then
+    echo "[OK] nvim configuration downloaded to $nvim_dir"
+  else
+    echo "[ERROR] Could not clone the repository."
+    return 2
+  fi
+}
+
+# ejecutar root una sola vez
+su -c "$(declare -f install_root); install_root"
+
+# ejecutar usuario
+nvim_setup
