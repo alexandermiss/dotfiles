@@ -20,20 +20,20 @@ All settings are managed by [yadm](https://yadm.io/), allowing simple deployment
 
 ## 🎯 Key Features
 
-- **🔗 Centralized Neovim Config**  
-  Deploy a modern Neovim setup instantly (config is external but easily bootstrapped).
+- **🔗 Centralized Neovim Config**
+  Deploy a modern Neovim setup instantly. The configuration is bootstrapped automatically from [alexandermiss/nvim](https://github.com/alexandermiss/nvim).
 
-- **🎛️ Sway Window Manager**  
+- **🎛️ Sway Window Manager**
   Custom tiling window manager with seamless dark/light theming.
 
-- **🚀 Wofi Launcher**  
+- **🚀 Wofi Launcher**
   Application launcher with personalized menus and both dark & light themes.
 
-- **🖥️ Foot Terminal**  
+- **🖥️ Foot Terminal**
   Terminal emulator setup for both dark and light environments.
 
-- **⚙️ Bootstrap Script**  
-  Automated script to initialize Neovim and essential configs in a single step.
+- **⚙️ Bootstrap Script**
+  Automated script to initialize Neovim and essential configurations in a single step.
 
 ---
 
@@ -61,7 +61,7 @@ chmod a+x ~/.local/bin/yadm
 ~/.local/bin/yadm checkout -- $HOME
 
 # Initialize Neovim and configs
-~/.local/bin/yadm bootstrap
+./bootstrap
 
 # Optionally remove yadm after setup
 rm -rf ~/.local/bin/yadm
@@ -73,12 +73,28 @@ rm -rf ~/.local/bin/yadm
 
 ```text
 .config/
+├── nvim/      # Neovim config (automatic bootstrap)
 ├── sway/      # Sway configs (dark & light)
 ├── wofi/      # Wofi configs & themes
 ├── foot/      # Foot terminal configs (dark & light)
-├── nvim/      # Neovim config (external repo)
 ├── yadm/      # yadm config & bootstrap
 └── ...
+```
+
+---
+
+## Bootstrap Script
+
+The `bootstrap` script simplifies the setup process by automating the download of the Neovim configuration:
+
+1. Checks if `git` is installed.
+2. Validates whether the Neovim configuration already exists in `~/.config/nvim`.
+3. Clones the Neovim configuration from the [alexandermiss/nvim](https://github.com/alexandermiss/nvim) repository.
+
+To run the script manually:
+
+```sh
+./bootstrap
 ```
 
 ---
