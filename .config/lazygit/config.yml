@@ -1,0 +1,9 @@
+customCommands:
+  - key: 'U'
+    command: 'git fetch upstream --prune && git rebase upstream/main'
+    context: 'global'
+    description: 'Fetch upstream y rebase main'
+  - key: 'D'
+    command: 'git fetch upstream --prune && git rebase upstream/develop'
+    context: 'global'
+    description: 'Fetch upstream y rebase develop'
