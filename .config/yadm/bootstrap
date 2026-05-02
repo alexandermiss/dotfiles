@@ -344,7 +344,7 @@ gpg_import() {
 
   for entry in "${GPG_APPS[@]}"; do
     local app_name="${entry%%:*}"
-    local app_url="${entry##*:}"
+    local app_url="${entry#*:}"
 
     echo "[INFO] Descargando clave GPG para $app_name..."
     local asc_file="/tmp/${app_name}.asc"
