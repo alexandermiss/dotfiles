@@ -281,6 +281,55 @@ nvim_setup() {
 }
 
 # =============================================================================
+# AUR packages
+# =============================================================================
+AUR_PACKAGES=(
+  "1password"
+)
+
+AUR_COMPILED=()
+
+aur_setup() {
+  local aur_dir="$HOME/aurs"
+
+  if ! command -v makepkg >/dev/null 2>&1; then
+    echo "[ERROR] makepkg no está disponible. Asegúrate de tener base-devel instalado."
+    return 1
+  fi
+
+  mkdir -p "$aur_dir"
+
+  for pkg in "${AUR_PACKAGES[@]}"; do
+    local pkg_dir="$aur_dir/$pkg"
+
+    if [ -d "$pkg_dir" ]; then
+      echo "[INFO] $pkg ya está descargado en $pkg_dir"
+      AUR_COMPILED+=("$pkg_dir")
+      continue
+    fi
+
+    echo "[INFO] Descargando $pkg desde AUR..."
+    git clone "https://aur.archlinux.org/${pkg}.git" "$pkg_dir"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo clonar $pkg desde AUR"
+      continue
+    fi
+
+    echo "[INFO] Compilando $pkg con makepkg..."
+    (cd "$pkg_dir" && makepkg -s --noconfirm)
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo compilar $pkg"
+      continue
+    fi
+
+    AUR_COMPILED+=("$pkg_dir")
+    echo "[OK] $pkg compilado correctamente en $pkg_dir"
+  done
+
+  echo "[OK] Paquetes AUR procesados. Revisa $aur_dir para los binarios generados."
+}
+
+# =============================================================================
 # Ejecución principal
 # =============================================================================
 
@@ -333,10 +382,17 @@ echo "  Paso 7: Instalando temas Catppuccin GTK..."
 echo "=========================================="
 gtk_setup
 
-# 8. Neovim config (como usuario)
+# 8. AUR packages (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 8: Configurando Neovim..."
+echo "  Paso 8: Compilando paquetes AUR..."
+echo "=========================================="
+aur_setup
+
+# 9. Neovim config (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 9: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
@@ -351,15 +407,25 @@ echo "  Node.js: $NODE_LTS_VERSION (LTS)"
 echo "  rbenv:   $RBENV_VERSION"
 echo "  Ruby:    $RUBY_LTS_VERSION"
 echo ""
-echo "Recomendación: agrega estas líneas a tu ~/.zshrc o ~/.bashrc:"
-echo ""
-echo '  # nvm'
-echo '  export NVM_DIR="$HOME/.nvm"'
-echo '  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
-echo ""
-echo '  # rbenv'
-echo '  export PATH="$HOME/.rbenv/bin:$PATH"'
-echo '  eval "$(rbenv init -)"'
-echo ""
-echo '  # Cargo'
-echo '  . "$HOME/.cargo/env"'
+
+if [ ${#AUR_COMPILED[@]} -gt 0 ]; then
+  echo "Paquetes AUR compilados:"
+  local aur_files=()
+  for pkg_dir in "${AUR_COMPILED[@]}"; do
+    local pkg_name
+    pkg_name="$(basename "$pkg_dir")"
+    echo ""
+    echo "  → $pkg_name"
+    for pkg_file in "$pkg_dir"/*.pkg.tar.zst; do
+      if [ -f "$pkg_file" ]; then
+        local pkg_size
+        pkg_size="$(du -h "$pkg_file" | cut -f1)"
+        echo "      - $(basename "$pkg_file") ($pkg_size)"
+        aur_files+=("$pkg_file")
+      fi
+    done
+  done
+  echo ""
+  echo "Para instalar todos los paquetes AUR compilados, ejecuta:"
+  echo "  su -c 'pacman -U ${aur_files[*]}'"
+  echo ""
