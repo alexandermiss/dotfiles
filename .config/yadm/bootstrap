@@ -330,6 +330,43 @@ aur_setup() {
 }
 
 # =============================================================================
+# GPG keys
+# =============================================================================
+GPG_APPS=(
+  "1password:https://downloads.1password.com/linux/keys/1password.asc"
+)
+
+gpg_import() {
+  if ! command -v gpg >/dev/null 2>&1; then
+    echo "[ERROR] gpg no está disponible."
+    return 1
+  fi
+
+  for entry in "${GPG_APPS[@]}"; do
+    local app_name="${entry%%:*}"
+    local app_url="${entry##*:}"
+
+    echo "[INFO] Descargando clave GPG para $app_name..."
+    local asc_file="/tmp/${app_name}.asc"
+    curl -sS "$app_url" -o "$asc_file"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo descargar la clave GPG de $app_name"
+      continue
+    fi
+
+    echo "[INFO] Importando clave GPG de $app_name..."
+    gpg --import "$asc_file"
+    if [ $? -eq 0 ]; then
+      echo "[OK] Clave GPG de $app_name importada correctamente"
+    else
+      echo "[ERROR] No se pudo importar la clave GPG de $app_name"
+    fi
+
+    rm -f "$asc_file"
+  done
+}
+
+# =============================================================================
 # Ejecución principal
 # =============================================================================
 
