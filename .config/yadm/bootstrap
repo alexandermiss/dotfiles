@@ -204,6 +204,52 @@ ZSHEOF
 }
 
 # =============================================================================
+# Catppuccin GTK themes (Latte y Mocha)
+# =============================================================================
+CATPPUCCIN_GTK_VERSION="v1.0.3"
+CATPPUCCIN_ACCENT="mauve"
+
+gtk_setup() {
+  local themes_dir="$HOME/.themes"
+  local icons_dir="$HOME/.icons"
+
+  mkdir -p "$themes_dir"
+  mkdir -p "$icons_dir"
+
+  for flavor in latte mocha; do
+    local theme_name="catppuccin-${flavor}-${CATPPUCCIN_ACCENT}-standard+default"
+    local theme_dir="$themes_dir/${theme_name}"
+
+    if [ -d "$theme_dir" ]; then
+      echo "[INFO] El tema Catppuccin $flavor ya está instalado en $theme_dir"
+      continue
+    fi
+
+    echo "[INFO] Descargando tema Catppuccin $flavor..."
+    local zip_url="https://github.com/catppuccin/gtk/releases/download/${CATPPUCCIN_GTK_VERSION}/${theme_name}.zip"
+    local zip_path="/tmp/${theme_name}.zip"
+
+    curl -L "$zip_url" -o "$zip_path"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo descargar el tema Catppuccin $flavor"
+      continue
+    fi
+
+    unzip -q "$zip_path" -d "$themes_dir"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo descomprimir el tema Catppuccin $flavor"
+      rm -f "$zip_path"
+      continue
+    fi
+
+    rm -f "$zip_path"
+    echo "[OK] Tema Catppuccin $flavor instalado en $theme_dir"
+  done
+
+  echo "[OK] Temas Catppuccin Latte y Mocha instalados correctamente"
+}
+
+# =============================================================================
 # Neovim config
 # =============================================================================
 nvim_setup() {
@@ -262,28 +308,35 @@ flathub_setup
 # 4. nvm + Node.js (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 3: Instalando nvm + Node.js LTS..."
+echo "  Paso 4: Instalando nvm + Node.js LTS..."
 echo "=========================================="
 nvm_setup
 
-# 4. rbenv + Ruby (como usuario)
+# 5. rbenv + Ruby (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 4: Instalando rbenv + Ruby LTS..."
+echo "  Paso 5: Instalando rbenv + Ruby LTS..."
 echo "=========================================="
 rbenv_setup
 
-# 5. Configurar Zsh (como usuario) — después de cargo/nvm/rbenv para que existan los archivos env
+# 6. Configurar Zsh (como usuario) — después de cargo/nvm/rbenv para que existan los archivos env
 echo ""
 echo "=========================================="
-echo "  Paso 5: Configurando Zsh..."
+echo "  Paso 6: Configurando Zsh..."
 echo "=========================================="
 zsh_setup
 
-# 6. Neovim config (como usuario)
+# 7. Temas Catppuccin GTK (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 6: Configurando Neovim..."
+echo "  Paso 7: Instalando temas Catppuccin GTK..."
+echo "=========================================="
+gtk_setup
+
+# 8. Neovim config (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 8: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
