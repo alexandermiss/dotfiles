@@ -419,17 +419,24 @@ echo "  Paso 7: Instalando temas Catppuccin GTK..."
 echo "=========================================="
 gtk_setup
 
-# 8. AUR packages (como usuario)
+# 8. Importar claves GPG (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 8: Compilando paquetes AUR..."
+echo "  Paso 8: Importando claves GPG..."
+echo "=========================================="
+gpg_import
+
+# 9. AUR packages (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 9: Compilando paquetes AUR..."
 echo "=========================================="
 aur_setup
 
-# 9. Neovim config (como usuario)
+# 10. Neovim config (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 9: Configurando Neovim..."
+echo "  Paso 10: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
