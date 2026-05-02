@@ -454,15 +454,13 @@ echo ""
 
 if [ ${#AUR_COMPILED[@]} -gt 0 ]; then
   echo "Paquetes AUR compilados:"
-  local aur_files=()
+  aur_files=()
   for pkg_dir in "${AUR_COMPILED[@]}"; do
-    local pkg_name
     pkg_name="$(basename "$pkg_dir")"
     echo ""
     echo "  → $pkg_name"
     for pkg_file in "$pkg_dir"/*.pkg.tar.zst; do
       if [ -f "$pkg_file" ]; then
-        local pkg_size
         pkg_size="$(du -h "$pkg_file" | cut -f1)"
         echo "      - $(basename "$pkg_file") ($pkg_size)"
         aur_files+=("$pkg_file")
