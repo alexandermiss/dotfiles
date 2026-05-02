@@ -164,42 +164,6 @@ zsh_setup() {
     echo "[OK] Oh My Zsh instalado correctamente"
   fi
 
-  # El instalador de Oh My Zsh ya creó ~/.zshrc.
-  # Agregamos nuestra configuración adicional al final.
-  echo "[INFO] Agregando configuración adicional a $zshrc..."
-
-  cat >>"$zshrc" <<'ZSHEOF'
-
-# =============================================================================
-# Configuración adicional (agregada por bootstrap)
-# =============================================================================
-
-# --- nvm ---
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# --- rbenv ---
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# --- Cargo ---
-. "$HOME/.cargo/env"
-
-# --- zoxide ---
-eval "$(zoxide init zsh)"
-
-# --- Aliases útiles ---
-alias ls='ls --color=auto'
-alias ll='ls -lah'
-alias la='ls -A'
-alias l='ls -CF'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias grep='grep --color=auto'
-alias v='nvim'
-alias q='exit'
-ZSHEOF
-
   echo "[OK] Configuración adicional agregada a $zshrc"
 }
 
