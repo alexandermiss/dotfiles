@@ -429,3 +429,4 @@ if [ ${#AUR_COMPILED[@]} -gt 0 ]; then
   echo "Para instalar todos los paquetes AUR compilados, ejecuta:"
   echo "  su -c 'pacman -U ${aur_files[*]}'"
   echo ""
+fi
