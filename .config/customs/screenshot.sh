@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE=~/Pictures/Screenshots2/screenshot_$(date +%F_%T).png
+FILE=~/Pictures/screenshots/screenshot_$(date +%F_%T).png
 
 if [ "$1" = "area" ]; then
   GEOM=$(slurp)

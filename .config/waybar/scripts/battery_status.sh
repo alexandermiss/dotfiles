@@ -2,8 +2,8 @@
 
 # acpi | cut -d, -f 2 | xargs
 
-capacity=$(cat /sys/class/power_supply/BAT1/capacity)
-status=$(cat /sys/class/power_supply/BAT1/status)
+capacity=$(cat /sys/class/power_supply/BAT0/capacity)
+status=$(cat /sys/class/power_supply/BAT0/status)
 
 # Define icon and color based on capacity
 if [ "$status" = "Charging" ]; then
