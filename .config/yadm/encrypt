@@ -1,0 +1,16 @@
+.config/dummy3.json
+.config/other_encrypt.txt
+.config/mcphub/servers.json
+.config/crush/crush.json
+.zshrc
+
+.ssh/config
+.ssh/do_ed25519
+.ssh/do_ed25519.pub
+.ssh/id_ed25519
+.ssh/id_ed25519.pub
+.ssh/known_hosts
+.ssh/me_ed25519
+.ssh/me_ed25519.pub
+.ssh/pp_ed25519
+.ssh/pp_ed25519.pub
