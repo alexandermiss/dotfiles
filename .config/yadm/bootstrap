@@ -276,6 +276,49 @@ nerd_fonts_setup() {
 }
 
 # =============================================================================
+# Tmux (TPM + Catppuccin theme)
+# =============================================================================
+TPM_DIR="$HOME/.tmux/plugins/tpm"
+CATPPUCCIN_TMUX_DIR="$HOME/.config/tmux/plugins/catppuccin/tmux"
+
+tmux_setup() {
+  if ! command -v git >/dev/null 2>&1; then
+    echo "[ERROR] git no está instalado. No se puede configurar tmux."
+    return 1
+  fi
+
+  # TPM
+  if [ -d "$TPM_DIR" ]; then
+    echo "[INFO] TPM ya está instalado en $TPM_DIR"
+  else
+    echo "[INFO] Instalando TPM..."
+    mkdir -p "$(dirname "$TPM_DIR")"
+    git clone --depth=1 https://github.com/tmux-plugins/tpm "$TPM_DIR"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo clonar TPM."
+      return 1
+    fi
+    echo "[OK] TPM instalado"
+  fi
+
+  # Catppuccin tmux theme
+  if [ -d "$CATPPUCCIN_TMUX_DIR" ]; then
+    echo "[INFO] Catppuccin tmux theme ya está instalado en $CATPPUCCIN_TMUX_DIR"
+  else
+    echo "[INFO] Instalando Catppuccin tmux theme..."
+    mkdir -p "$(dirname "$CATPPUCCIN_TMUX_DIR")"
+    git clone --depth=1 -b v2.3.0 https://github.com/catppuccin/tmux.git "$CATPPUCCIN_TMUX_DIR"
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] No se pudo clonar Catppuccin tmux."
+      return 1
+    fi
+    echo "[OK] Catppuccin tmux theme instalado"
+  fi
+
+  echo "[OK] Tmux configurado correctamente"
+}
+
+# =============================================================================
 # Neovim config
 # =============================================================================
 nvim_setup() {
@@ -452,24 +495,31 @@ echo "  Paso 8: Instalando Nerd Fonts (FiraCode)..."
 echo "=========================================="
 nerd_fonts_setup
 
-# 9. Importar claves GPG (como usuario)
+# 9. Tmux (TPM + Catppuccin) (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 9: Importando claves GPG..."
+echo "  Paso 9: Configurando Tmux (TPM + Catppuccin)..."
+echo "=========================================="
+tmux_setup
+
+# 10. Importar claves GPG (como usuario)
+echo ""
+echo "=========================================="
+echo "  Paso 10: Importando claves GPG..."
 echo "=========================================="
 gpg_import
 
-# 10. AUR packages (como usuario)
+# 11. AUR packages (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 10: Compilando paquetes AUR..."
+echo "  Paso 11: Compilando paquetes AUR..."
 echo "=========================================="
 aur_setup
 
-# 11. Neovim config (como usuario)
+# 12. Neovim config (como usuario)
 echo ""
 echo "=========================================="
-echo "  Paso 11: Configurando Neovim..."
+echo "  Paso 12: Configurando Neovim..."
 echo "=========================================="
 nvim_setup
 
