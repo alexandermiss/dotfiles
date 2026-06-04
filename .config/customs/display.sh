@@ -88,7 +88,7 @@ apply_hypr_screen1() {
   sleep 0.3
 
   # eDP a la derecha de HDMI (posición X = 1920)
-  hyprctl keyword monitor "eDP-1,1920x1200@60,1920x0,1.2"
+  hyprctl keyword monitor "eDP-1,1920x1200@60,1920x0,1.5"
   sleep 0.3
 
   # Asignar workspaces: primario=eDP (laptop), secundario=HDMI
@@ -110,7 +110,7 @@ apply_hypr_screen2() {
   #   HDMI-A-1:        1920x1080 @ 1.0x scale
 
   # Primero poner eDP a la izquierda
-  hyprctl keyword monitor "eDP-1,1920x1200@60,0x0,1.2"
+  hyprctl keyword monitor "eDP-1,1920x1200@60,0x0,1.5"
   sleep 0.3
 
   # HDMI a la derecha de eDP (posición X = 1920)
