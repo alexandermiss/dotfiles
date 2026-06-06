@@ -59,7 +59,10 @@ install_root() {
     extra/mplayer \
     hyprlock \
     extra/gnome-calculator \
-    rust-analyzer
+    rust-analyzer \
+    evince \
+    pandoc \
+    texlive-meta
 }
 
 # =============================================================================

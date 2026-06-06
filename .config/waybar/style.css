@@ -3,7 +3,7 @@
   min-height: 0;
   min-width: 0;
   font-family: "Fira Code", "JetBrains Mono", monospace;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 window#waybar {
@@ -22,7 +22,7 @@ window#waybar {
 }
 
 #workspaces button:hover {
-  color: #F5C2E7; /* Catppuccin Pink */
+  color: #000; /* Catppuccin Pink */
   background-color: #E5A8C8; /* Catppuccin Rosewater */
 }
 
